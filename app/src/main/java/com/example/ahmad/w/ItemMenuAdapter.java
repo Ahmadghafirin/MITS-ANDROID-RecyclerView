@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class ItemMenuAdapter extends RecyclerView.Adapter<ItemMenuAdapter.MenuViewHolder> {
 
-    private ArrayList<ItemMenu> dataSet;
+    public ArrayList<ItemMenu> dataSet;
 
     public ItemMenuAdapter(ArrayList<ItemMenu> inputData) {
         dataSet = inputData;
@@ -30,9 +30,9 @@ public class ItemMenuAdapter extends RecyclerView.Adapter<ItemMenuAdapter.MenuVi
     @Override
     public void onBindViewHolder(MenuViewHolder holder, int position) {
         ItemMenu itemMenu = dataSet.get(position);
-        /*holder.ivIcon.setImageResource(Integer.parseInt(itemMenu.getIcon()));*/
         holder.tvMenu.setText(itemMenu.getMenu());
         holder.tvHarga.setText(itemMenu.getHarga());
+        holder.ivIcon.setImageResource(itemMenu.getIcon());
     }
 
     @Override
@@ -43,7 +43,7 @@ public class ItemMenuAdapter extends RecyclerView.Adapter<ItemMenuAdapter.MenuVi
     public class MenuViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvMenu, tvHarga;
-        ImageView  ivIcon;
+        ImageView ivIcon;
 
         public MenuViewHolder(View itemView) {
             super(itemView);
