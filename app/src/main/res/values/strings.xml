@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Let\'s eat</string>
+    <string name="camera_and_storage_rationale">This app need use some of your phone hardware.</string>
+    <string name="title_activity_main">MainActivity</string>
 </resources>

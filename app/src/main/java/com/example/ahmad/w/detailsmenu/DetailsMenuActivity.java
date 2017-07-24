@@ -1,4 +1,4 @@
-package com.example.ahmad.w;
+package com.example.ahmad.w.detailsmenu;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -6,12 +6,14 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.ahmad.w.menu.MenuActivity;
+import com.example.ahmad.w.menu.ItemMenu;
+import com.example.ahmad.w.R;
+
 public class DetailsMenuActivity extends AppCompatActivity {
 
 
     private static final String TAG = DetailsMenuActivity.class.getSimpleName();
-    public final int REQUEST_CODE = 1;
-    public static final int RESULT_CODE = 5;
     private TextView tvMenu, tvHarga, tvKeterangan;
     private ImageView ivIcon;
 
@@ -25,13 +27,13 @@ public class DetailsMenuActivity extends AppCompatActivity {
         tvKeterangan = (TextView) findViewById(R.id.tv_keterangan);
         ivIcon = (ImageView) findViewById(R.id.iv_icondetails);
 
-        ItemMenu itemMenu = getIntent().getParcelableExtra(MainActivity.KEY_ITEM);
+        ItemMenu itemMenu = getIntent().getParcelableExtra(MenuActivity.KEY_ITEM);
         getSupportActionBar().setTitle(itemMenu.getMenu());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         tvMenu.setText(itemMenu.getMenu());
-        tvHarga.setText(itemMenu.getHarga());
-        tvKeterangan.setText(itemMenu.getKeterangan());
-        ivIcon.setImageResource(itemMenu.getIcon());
+        tvHarga.setText(itemMenu.getPrice());
+        tvKeterangan.setText(itemMenu.getDetails());
+        ivIcon.setImageResource(itemMenu.getImage());
         Log.d(TAG, "data: " + itemMenu.toString());
 
     }

@@ -1,4 +1,4 @@
-package com.example.ahmad.w;
+package com.example.ahmad.w.recyclerview;
 
 import android.content.Context;
 import android.graphics.Rect;
