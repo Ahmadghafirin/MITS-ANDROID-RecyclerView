@@ -38,7 +38,7 @@ public class DashboardActivity extends AppCompatActivity {
         List<User> userList = tableUser.getAllUser();
         for (User user : userList){
             if (user.getEmail().equals(sessionEmail) &&
-            user.getPassword().equals(sessionEmail)){
+            user.getPassword().equals(sessionPass)){
                 result = "Name : " + user.getName() + "\nEmail : " + user.getEmail()
                         + "\nPhone :" + user.getPhone() + "\nGender : " + user.getGender();
             }

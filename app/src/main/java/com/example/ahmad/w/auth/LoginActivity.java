@@ -24,7 +24,9 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         sessionManager = SessionManager.getInstance();
-        if (sessionManager.isLoggedIn()) openDashboard();
+        if (sessionManager.isLoggedIn()) {
+            openDashboard();
+        }
         setContentView(R.layout.activity_login);
 
         tableUser = new DataBaseHandler(this);

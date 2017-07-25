@@ -33,7 +33,7 @@ public class DetailsMenuActivity extends AppCompatActivity {
         tvMenu.setText(itemMenu.getMenu());
         tvHarga.setText(itemMenu.getPrice());
         tvKeterangan.setText(itemMenu.getDetails());
-        ivIcon.setImageResource(itemMenu.getImage());
+        ivIcon.setImageResource(Integer.parseInt(itemMenu.getImage()));
         Log.d(TAG, "data: " + itemMenu.toString());
 
     }

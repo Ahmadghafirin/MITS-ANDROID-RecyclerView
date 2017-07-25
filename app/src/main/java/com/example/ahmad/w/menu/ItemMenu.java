@@ -8,10 +8,10 @@ import android.os.Parcelable;
  */
 
 public class ItemMenu implements Parcelable {
-    private String menu, price, details;
-    private int image, id;
+    private String menu, price, details, image;
+    private int id;
 
-    public ItemMenu(String menu, String price, String details, int image, int id) {
+    public ItemMenu(String menu, String price, String details, String image, int id) {
         this.menu = menu;
         this.price = price;
         this.details = details;
@@ -29,7 +29,7 @@ public class ItemMenu implements Parcelable {
         menu = in.readString();
         price = in.readString();
         details = in.readString();
-        image = in.readInt();
+        image = in.readString();
         id = in.readInt();
     }
 
@@ -76,11 +76,11 @@ public class ItemMenu implements Parcelable {
         this.details = details;
     }
 
-    public int getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(int icon) {
+    public void setImage(String icon) {
         this.image = icon;
     }
 
@@ -102,7 +102,7 @@ public class ItemMenu implements Parcelable {
         dest.writeString(menu);
         dest.writeString(price);
         dest.writeString(details);
-        dest.writeInt(image);
+        dest.writeString(image);
         dest.writeInt(id);
     }
 

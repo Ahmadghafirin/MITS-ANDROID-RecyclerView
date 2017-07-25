@@ -16,7 +16,7 @@ import com.example.ahmad.w.user.User;
 public class RegisterActivity extends AppCompatActivity {
 
     private EditText etName, etEmail, etPhone, etGender, etPassword;
-    public static final String TAG = "tagmainactivity";
+    public static final String TAG = "TagMainActivity";
     private SessionManager sessionManager;
     private DataBaseHandler tableUser;
 

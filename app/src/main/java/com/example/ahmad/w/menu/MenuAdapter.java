@@ -42,7 +42,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
         ItemMenu itemMenu = dataSet.get(position);
         holder.tvMenu.setText(itemMenu.getMenu());
         holder.tvHarga.setText(itemMenu.getPrice());
-        holder.ivIcon.setImageResource(itemMenu.getImage());
+        holder.ivIcon.setImageResource(Integer.parseInt(itemMenu.getImage()));
     }
 
     @Override
