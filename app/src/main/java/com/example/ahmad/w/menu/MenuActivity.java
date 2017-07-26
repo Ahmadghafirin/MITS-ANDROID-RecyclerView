@@ -6,10 +6,12 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.View;
 
 import com.example.ahmad.w.R;
 import com.example.ahmad.w.database.DataBaseHandler;
+import com.example.ahmad.w.detailsmenu.DetailsMenuActivity;
 import com.example.ahmad.w.recyclerview.RecyclerTouchListener;
 import com.example.ahmad.w.recyclerview.SpacesItemDecoration;
 
@@ -23,16 +25,21 @@ public class MenuActivity extends AppCompatActivity {
     private Intent intent;
     public static final int RESULT_ADD = 2;
     public static final int RESULT_UPDATE = 3;
-    private DataBaseHandler tableMenu;
+    private DataBaseHandler baseHandler;
     private int pos;
+    private static final String TAG = MenuActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
-        tableMenu = DataBaseHandler.getInstance();
+        baseHandler = DataBaseHandler.getInstance();
         recyclerView = (RecyclerView) findViewById(R.id.rv_item);
+        for (ItemMenu itemMenu : baseHandler.getAllMenu()) {
+            Log.d(TAG, "List" + itemMenu.toString());
+        }
+
     }
 
     @Override
@@ -42,7 +49,7 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     public void initRecyclerView() {
-        List<ItemMenu> itemMenuList = tableMenu.getAllMenu();
+        List<ItemMenu> itemMenuList = baseHandler.getAllMenu();
         adapter = new MenuAdapter(MenuActivity.this, itemMenuList);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -52,16 +59,22 @@ public class MenuActivity extends AppCompatActivity {
                 new RecyclerTouchListener.ClickListener() {
                     @Override
                     public void onClick(View view, int position) {
-                        intent = new Intent(MenuActivity.this, AddMenuActivity.class);
+                        intent = new Intent(MenuActivity.this, DetailsMenuActivity.class);
                         ItemMenu menu = adapter.getItem(position);
 
-                        intent.putExtra("Menu", menu);
-                        pos = position;
-                        startActivityForResult(intent, RESULT_UPDATE);
+                        intent.putExtra("menu", menu);
+                        /*pos = position;*/
+                        startActivity(intent);
                     }
 
                     @Override
                     public void onLongClick(View view, int position) {
+                        intent = new Intent(MenuActivity.this, AddMenuActivity.class);
+                        ItemMenu menu = adapter.getItem(position);
+
+                        intent.putExtra("menu", menu);
+                        pos = position;
+                        startActivityForResult(intent, RESULT_UPDATE);
                     }
                 }));
 
@@ -80,27 +93,27 @@ public class MenuActivity extends AppCompatActivity {
         @Override
         public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
             int position = viewHolder.getAdapterPosition();
-            tableMenu.deleteMenuById(adapter.getItem(position).getId());
+            baseHandler.deleteMenuById(adapter.getItem(position).getId());
             adapter.remove(position);
         }
 
     };
 
-    public void submitAddMenu(View view){
+    public void submitAddMenu(View view) {
         Intent intent = new Intent(this, AddMenuActivity.class);
         startActivityForResult(intent, RESULT_ADD);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_ADD){
+        if (resultCode == RESULT_ADD) {
             ItemMenu menu = data.getParcelableExtra("Data_Add");
-            tableMenu.addMenu(menu);
+            baseHandler.addMenu(menu);
             adapter.insert(menu);
             recyclerView.scrollToPosition(0);
-        }else if (resultCode == RESULT_UPDATE){
+        } else if (resultCode == RESULT_UPDATE) {
             ItemMenu menu = data.getParcelableExtra("Data_Update");
-            tableMenu.updateMenu(new ItemMenu(menu.getId(), menu.getMenu(), menu.getPrice(),
+            baseHandler.updateMenu(new ItemMenu(menu.getId(), menu.getMenu(), menu.getPrice(),
                     menu.getDetails(), menu.getImage()));
             adapter.update(pos, menu);
             recyclerView.scrollToPosition(0);

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.ahmad.w.R;
 
 import java.util.ArrayList;
@@ -42,7 +43,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
         ItemMenu itemMenu = dataSet.get(position);
         holder.tvMenu.setText(itemMenu.getMenu());
         holder.tvHarga.setText(itemMenu.getPrice());
-        holder.ivIcon.setImageResource(Integer.parseInt(itemMenu.getImage()));
+        Glide.with(context).load(itemMenu.getImage()).into(holder.ivIcon);
     }
 
     @Override

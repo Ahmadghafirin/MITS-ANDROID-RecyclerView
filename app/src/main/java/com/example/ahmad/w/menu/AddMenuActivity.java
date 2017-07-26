@@ -3,12 +3,15 @@ package com.example.ahmad.w.menu;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.util.LogTime;
 import com.example.ahmad.w.R;
+import com.example.ahmad.w.database.DataBaseHandler;
 
 import java.io.File;
 
@@ -21,6 +24,7 @@ public class AddMenuActivity extends AppCompatActivity {
     private ItemMenu menu = null;
     private int id;
     private String path;
+    private static final String TAG = AddMenuActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +39,7 @@ public class AddMenuActivity extends AppCompatActivity {
         menu = getIntent().getParcelableExtra("menu");
 
         if (menu != null) {
-            getSupportActionBar().setTitle("Edit ItemMenu");
+            getSupportActionBar().setTitle("Edit Menu");
             id = menu.getId();
             etName.setText(menu.getMenu());
             etPrice.setText(menu.getPrice());
@@ -86,18 +90,18 @@ public class AddMenuActivity extends AppCompatActivity {
 
     public void submitSave(View view) {
         String name, price, details;
-
+        DataBaseHandler db = DataBaseHandler.getInstance();
         name = etName.getText().toString();
         price = etPrice.getText().toString();
         details = etDetails.getText().toString();
-
-        Intent returnIntent = new Intent();
+        ItemMenu item = new ItemMenu(id,name, price, details, path);
         if (menu != null) {
-            returnIntent.putExtra("Data_Update", new ItemMenu(id, name, price, details, path));
-            setResult(MenuActivity.RESULT_UPDATE, returnIntent);
+            db.updateMenu(item);
+            startActivity(new Intent(this, MenuActivity.class));
         } else {
-            returnIntent.putExtra("Data_Add", new ItemMenu(name, price, details, path));
-            setResult(MenuActivity.RESULT_ADD, returnIntent);
+            db.addMenu(item);
+            Log.d(TAG, "Save" + item);
+            startActivity(new Intent(this, MenuActivity.class));
         }
         finish();
     }

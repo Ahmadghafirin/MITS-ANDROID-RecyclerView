@@ -19,7 +19,7 @@ import java.util.List;
  */
 
 public class DataBaseHandler extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 6;
     private static final String DATABASE_NAME = "db_menu";
 
     private static final String TABLE_MENU = "menu";
@@ -27,6 +27,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
     private static final String KEY_NAMEMENU = "name_menu";
     private static final String KEY_PRICEMENU = "price_menu";
     private static final String KEY_IMAGEMENU = "image_menu";
+    public static final String KEY_DETAILSMENU = "details_menu";
 
   /*  private static final String TABLE_CATEGORY = "category";
     private static final String KEY_ID_CATEGORY = "id_category";
@@ -62,10 +63,11 @@ public class DataBaseHandler extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        String CREATE_MENU_TABLE = "CREATE TABLE " + TABLE_MENU + "("
+        String CREATE_MENU_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_MENU + "("
                 + KEY_ID_MENU + " INTEGER PRIMARY KEY,"
                 + KEY_NAMEMENU + " TEXT,"
                 + KEY_PRICEMENU + " TEXT,"
+                + KEY_DETAILSMENU + " TEXT,"
                 + KEY_IMAGEMENU + " TEXT" + ")";
 
         sqLiteDatabase.execSQL(CREATE_MENU_TABLE);
@@ -77,7 +79,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
 
         sqLiteDatabase.execSQL(CREATE_CATEGORY_TABLE);*/
 
-        String CREATE_USER_TABLE = "CREATE TABLE " + TABLE_USER + "("
+        String CREATE_USER_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_USER + "("
                 + KEY_ID_USER + " INTEGER PRIMARY KEY,"
                 + KEY_NAMEUSER + " TEXT,"
                 + KEY_EMAILUSER + " TEXT,"
@@ -102,6 +104,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         values.put(KEY_NAMEMENU, itemMenu.getMenu());
         values.put(KEY_PRICEMENU, itemMenu.getPrice());
         values.put(KEY_IMAGEMENU, itemMenu.getImage());
+        values.put(KEY_DETAILSMENU, itemMenu.getDetails());
 
         db.insert(TABLE_MENU, null, values);
         Log.d(TAG, "Add ItemMenu Succes!");
@@ -130,7 +133,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
 
     public List<ItemMenu> getAllMenu() {
         List<ItemMenu> itemMenuList = new ArrayList();
-        String selectQuery = "SELECT * FROM " + TABLE_MENU + " ORDER BY " + KEY_NAMEMENU + "DESC";
+        String selectQuery = "SELECT * FROM " + TABLE_MENU + " ORDER BY " + KEY_NAMEMENU + " DESC";
 
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
@@ -139,7 +142,8 @@ public class DataBaseHandler extends SQLiteOpenHelper {
                 itemMenu.setId(cursor.getInt(0));
                 itemMenu.setName(cursor.getString(1));
                 itemMenu.setPrice(cursor.getString(2));
-                itemMenu.setImage(cursor.getString(3));
+                itemMenu.setDetails(cursor.getString(3));
+                itemMenu.setImage(cursor.getString(4));
                 itemMenuList.add(itemMenu);
             } while (cursor.moveToNext());
         }
@@ -191,7 +195,8 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         values.put(KEY_NAMEMENU, itemMenu.getMenu());
         values.put(KEY_PRICEMENU, itemMenu.getPrice());
         values.put(KEY_IMAGEMENU, itemMenu.getImage());
-        Log.d(TAG, "Update ItemMenu Succes!");
+        values.put(KEY_DETAILSMENU, itemMenu.getDetails());
+        Log.d(TAG, "Update ItemMenu Succes!" + itemMenu.toString());
 
         db.update(TABLE_MENU, values, KEY_ID_MENU + " = '" + itemMenu.getId() + "'", null);
     }
@@ -204,9 +209,9 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         values.put(KEY_PHONEUSER, user.getPhone());
         values.put(KEY_GENDERUSER, user.getGender());
         values.put(KEY_PASSWORDUSER, user.getPassword());
-        Log.d(TAG,"Update Succes !");
+        Log.d(TAG, "Update Succes !");
 
-        db.update(TABLE_USER, values, KEY_ID_USER + " = '"+ user.getId() +"'" , null);
+        db.update(TABLE_USER, values, KEY_ID_USER + " = '" + user.getId() + "'", null);
     }
 
    /* public void updateCategory(CategoryMenu categoryMenu) {
@@ -233,9 +238,9 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         Log.d(TAG, "Delete Succes");
     }*/
 
-    public boolean checkUser(String email, String pass){
+    public boolean checkUser(String email, String pass) {
         String selectQuery = "SELECT * FROM " + TABLE_USER + " WHERE " + KEY_EMAILUSER + " = '" + email
-                + "' AND " + KEY_PASSWORDUSER  + " = '" + pass +"'";
+                + "' AND " + KEY_PASSWORDUSER + " = '" + pass + "'";
 
         Cursor cursor = db.rawQuery(selectQuery, null);
         return cursor.moveToFirst();

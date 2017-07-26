@@ -11,15 +11,12 @@ public class ItemMenu implements Parcelable {
     private String menu, price, details, image;
     private int id;
 
-    public ItemMenu(String menu, String price, String details, String image, int id) {
+    public ItemMenu(int id, String menu, String price, String details, String image) {
+        this.id = id;
         this.menu = menu;
         this.price = price;
         this.details = details;
         this.image = image;
-        this.id = id;
-    }
-
-    public ItemMenu(int id, String name, String price, String details, String path) {
     }
 
     public ItemMenu() {
