@@ -1,33 +1,54 @@
-package com.example.ahmad.w.menu;
+package com.example.ahmad.w.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
+import com.activeandroid.query.Select;
+import com.activeandroid.query.Update;
+
+import java.util.List;
 
 /**
  * Created by ahmad on 13/07/17.
  */
 
-public class ItemMenu implements Parcelable {
-    private String menu, price, details, image;
-    private int id;
 
-    public ItemMenu(int id, String menu, String price, String details, String image) {
-        this.id = id;
-        this.menu = menu;
+@Table(name = "ItemMenu")
+public class ItemMenu extends Model implements Parcelable {
+
+    @Column(name = "Menu")
+    private String menu;
+
+    @Column(name = "Price")
+    private int price;
+
+    @Column(name = "Details")
+    private String details;
+
+    @Column(name = "Image")
+    private String image;
+
+    public ItemMenu() {
+        super();
+    }
+
+
+    public ItemMenu(String nameMenu, int price, String details, String image) {
+        super();
+        this.menu = nameMenu;
         this.price = price;
         this.details = details;
         this.image = image;
     }
 
-    public ItemMenu() {
-    }
-
     public ItemMenu(Parcel in) {
         menu = in.readString();
-        price = in.readString();
+        price = in.readInt();
         details = in.readString();
         image = in.readString();
-        id = in.readInt();
     }
 
     public static final Creator<ItemMenu> CREATOR = new Creator<ItemMenu>() {
@@ -42,12 +63,6 @@ public class ItemMenu implements Parcelable {
         }
     };
 
-    public ItemMenu(String name, String price, String details, String path) {
-
-    }
-
-    public ItemMenu(int id, String menu, String price, String details, int image) {
-    }
 
     public String getMenu() {
         return menu;
@@ -57,11 +72,11 @@ public class ItemMenu implements Parcelable {
         this.menu = menu;
     }
 
-    public String getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(String harga) {
+    public void setPrice(int harga) {
         this.price = harga;
     }
 
@@ -81,14 +96,6 @@ public class ItemMenu implements Parcelable {
         this.image = icon;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     @Override
     public int describeContents() {
         return 0;
@@ -97,19 +104,29 @@ public class ItemMenu implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(menu);
-        dest.writeString(price);
+        dest.writeInt(price);
         dest.writeString(details);
         dest.writeString(image);
-        dest.writeInt(id);
     }
 
     @Override
     public String toString() {
         return "ItemMenu{" +
                 "menu='" + menu + '\'' +
-                ", price='" + price + '\'' +
+                ", price='Rp." + price + '\'' +
                 ", details='" + details + '\'' +
                 ", image=" + image +
                 '}';
+    }
+
+    public static List<ItemMenu> getAllMenu() {
+        return new Select().from(ItemMenu.class)
+                .orderBy("Id Desc").execute();
+    }
+
+    public static void updateMenu(long id, ItemMenu itemMenu) {
+        new Update(ItemMenu.class).set("Menu = ?, Price = ?, Details = ?, Image = ?",
+                itemMenu.getMenu(), itemMenu.getPrice(), itemMenu.getDetails(), itemMenu.getImage())
+                .where("Id = ?", id).execute();
     }
 }

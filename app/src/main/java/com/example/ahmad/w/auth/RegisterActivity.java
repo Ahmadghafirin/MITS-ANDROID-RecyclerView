@@ -9,16 +9,14 @@ import android.widget.EditText;
 
 import com.example.ahmad.w.R;
 import com.example.ahmad.w.SessionManager;
-import com.example.ahmad.w.database.DataBaseHandler;
 import com.example.ahmad.w.user.DashboardActivity;
-import com.example.ahmad.w.user.User;
+import com.example.ahmad.w.model.User;
 
 public class RegisterActivity extends AppCompatActivity {
 
     private EditText etName, etEmail, etPhone, etGender, etPassword;
     public static final String TAG = "TagMainActivity";
     private SessionManager sessionManager;
-    private DataBaseHandler tableUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,8 +24,6 @@ public class RegisterActivity extends AppCompatActivity {
         sessionManager = SessionManager.getInstance();
         setContentView(R.layout.activity_register);
         Log.d(TAG, "onCreate is Called");
-
-        tableUser = DataBaseHandler.getInstance();
 
         etName = (EditText) findViewById(R.id.et_name_register);
         etEmail = (EditText) findViewById(R.id.et_email_register);
@@ -68,7 +64,9 @@ public class RegisterActivity extends AppCompatActivity {
             etPassword.requestFocus();
             return;
         }
-        tableUser.addUser(new User(name, email, phone, gender, pass));
+        User user = new User(name, email, phone, gender, pass);
+        user.save();
+
         sessionManager.setLogin(email, pass);
 
         Intent intent = new Intent(this, DashboardActivity.class);

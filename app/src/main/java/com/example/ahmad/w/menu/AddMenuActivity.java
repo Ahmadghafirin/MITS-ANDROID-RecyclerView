@@ -9,9 +9,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.util.LogTime;
 import com.example.ahmad.w.R;
-import com.example.ahmad.w.database.DataBaseHandler;
+import com.example.ahmad.w.model.ItemMenu;
 
 import java.io.File;
 
@@ -22,7 +21,6 @@ public class AddMenuActivity extends AppCompatActivity {
     private EditText etName, etPrice, etDetails;
     private ImageView image;
     private ItemMenu menu = null;
-    private int id;
     private String path;
     private static final String TAG = AddMenuActivity.class.getSimpleName();
 
@@ -40,10 +38,10 @@ public class AddMenuActivity extends AppCompatActivity {
 
         if (menu != null) {
             getSupportActionBar().setTitle("Edit Menu");
-            id = menu.getId();
             etName.setText(menu.getMenu());
             etPrice.setText(menu.getPrice());
             etDetails.setText(menu.getDetails());
+            /*path = menu.getImage();*/
             Glide.with(AddMenuActivity.this).load(menu.getImage()).into(image);
         } else getSupportActionBar().setTitle("Add Menu");
     }
@@ -85,23 +83,35 @@ public class AddMenuActivity extends AppCompatActivity {
                     .centerCrop()
                     .into(image);
             path = imageFile.getAbsolutePath();
+            Log.d(TAG, "Data Path :" + path);
         }
     }
 
     public void submitSave(View view) {
-        String name, price, details;
-        DataBaseHandler db = DataBaseHandler.getInstance();
-        name = etName.getText().toString();
-        price = etPrice.getText().toString();
+        String nameMenu, details, image;
+        int price;
+
+        nameMenu = etName.getText().toString();
+        price = Integer.valueOf(etPrice.getText().toString());
         details = etDetails.getText().toString();
-        ItemMenu item = new ItemMenu(id,name, price, details, path);
+        image = path;
+        Intent returnInten = new Intent();
+
+        if (path.isEmpty()) {
+            image = menu.getImage();
+        }
+
+
         if (menu != null) {
-            db.updateMenu(item);
-            startActivity(new Intent(this, MenuActivity.class));
+            returnInten.putExtra("Data_Update", new ItemMenu(nameMenu,
+                    price, details, image));
+            setResult(MenuActivity.RESULT_UPDATE, returnInten);
+            Log.d(TAG, "Data Update :" + menu.toString());
         } else {
-            db.addMenu(item);
-            Log.d(TAG, "Save" + item);
-            startActivity(new Intent(this, MenuActivity.class));
+            returnInten.putExtra("Data_Update", new ItemMenu(nameMenu,
+                    price, details, image));
+            setResult(MenuActivity.RESULT_ADD, returnInten);
+            Log.d(TAG, "Data Update :" + menu.toString());
         }
         finish();
     }

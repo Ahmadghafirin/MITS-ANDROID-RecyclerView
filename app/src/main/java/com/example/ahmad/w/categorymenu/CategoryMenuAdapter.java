@@ -19,17 +19,10 @@ public class CategoryMenuAdapter extends RecyclerView.Adapter<CategoryMenuAdapte
 
     public ArrayList<CategoryMenu> categorySet;
 
-    public CategoryMenuAdapter(ArrayList<CategoryMenu> inputData) {
-        categorySet = inputData;
-    }
-
-    public void remove(ArrayList<CategoryMenu> categorySet, int index) {
-        this.categorySet = categorySet;
-    }
-
     @Override
     public CategoryMenuViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.category_menu, parent, false);
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.category_menu, parent, false);
         return new CategoryMenuViewHolder(view);
     }
 

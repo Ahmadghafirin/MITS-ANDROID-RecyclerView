@@ -9,15 +9,13 @@ import android.widget.Toast;
 
 import com.example.ahmad.w.R;
 import com.example.ahmad.w.SessionManager;
-import com.example.ahmad.w.database.DataBaseHandler;
+import com.example.ahmad.w.model.User;
 import com.example.ahmad.w.user.DashboardActivity;
-import com.example.ahmad.w.user.User;
 
 public class LoginActivity extends AppCompatActivity {
 
     private EditText etEmail, etPass;
     private SessionManager sessionManager;
-    private DataBaseHandler tableUser;
     public static final int REQUEST_REGISTER = 1;
 
     @Override
@@ -29,7 +27,6 @@ public class LoginActivity extends AppCompatActivity {
         }
         setContentView(R.layout.activity_login);
 
-        tableUser = new DataBaseHandler(this);
         etEmail = (EditText) findViewById(R.id.et_emailLogin);
         etPass = (EditText) findViewById(R.id.et_passwordLogin);
     }
@@ -66,7 +63,8 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        if (tableUser.checkUser(email, pass)) {
+        User user = new User();
+        if (user.checkUser(email, pass)) {
             sessionManager.setLogin(email, pass);
             openDashboard();
         } else Toast.makeText(this, "Email or password is invalid", Toast.LENGTH_SHORT).show();

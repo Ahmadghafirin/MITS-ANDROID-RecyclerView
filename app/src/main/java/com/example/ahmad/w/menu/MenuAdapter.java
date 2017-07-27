@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.ahmad.w.R;
+import com.example.ahmad.w.model.ItemMenu;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,17 +20,9 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
     public List<ItemMenu> dataSet;
     private Context context;
 
-    public MenuAdapter(ArrayList<ItemMenu> inputData) {
-        dataSet = inputData;
-    }
-
     public MenuAdapter(Context context, List<ItemMenu> dataset) {
         this.context = context;
         this.dataSet = dataset;
-    }
-
-    public void remove(ArrayList<ItemMenu> dataSet, int index) {
-        this.dataSet = dataSet;
     }
 
     @Override

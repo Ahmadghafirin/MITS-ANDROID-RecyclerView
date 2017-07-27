@@ -6,12 +6,11 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.View;
 
 import com.example.ahmad.w.R;
-import com.example.ahmad.w.database.DataBaseHandler;
 import com.example.ahmad.w.detailsmenu.DetailsMenuActivity;
+import com.example.ahmad.w.model.ItemMenu;
 import com.example.ahmad.w.recyclerview.RecyclerTouchListener;
 import com.example.ahmad.w.recyclerview.SpacesItemDecoration;
 
@@ -19,27 +18,22 @@ import java.util.List;
 
 public class MenuActivity extends AppCompatActivity {
 
-    public static final String KEY_ITEM = "Item";
     private MenuAdapter adapter;
     private RecyclerView recyclerView;
     private Intent intent;
     public static final int RESULT_ADD = 2;
     public static final int RESULT_UPDATE = 3;
-    private DataBaseHandler baseHandler;
     private int pos;
     private static final String TAG = MenuActivity.class.getSimpleName();
+    private long id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
-        baseHandler = DataBaseHandler.getInstance();
         recyclerView = (RecyclerView) findViewById(R.id.rv_item);
-        for (ItemMenu itemMenu : baseHandler.getAllMenu()) {
-            Log.d(TAG, "List" + itemMenu.toString());
-        }
-
+        initRecyclerView();
     }
 
     @Override
@@ -49,7 +43,7 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     public void initRecyclerView() {
-        List<ItemMenu> itemMenuList = baseHandler.getAllMenu();
+        List<ItemMenu> itemMenuList = ItemMenu.getAllMenu();
         adapter = new MenuAdapter(MenuActivity.this, itemMenuList);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -63,7 +57,6 @@ public class MenuActivity extends AppCompatActivity {
                         ItemMenu menu = adapter.getItem(position);
 
                         intent.putExtra("menu", menu);
-                        /*pos = position;*/
                         startActivity(intent);
                     }
 
@@ -72,6 +65,11 @@ public class MenuActivity extends AppCompatActivity {
                         intent = new Intent(MenuActivity.this, AddMenuActivity.class);
                         ItemMenu menu = adapter.getItem(position);
 
+                        if (menu.getId() == null) {
+                            id = 0;
+                        } else id = menu.getId();
+
+                        intent.putExtra("id_menu", menu.getId());
                         intent.putExtra("menu", menu);
                         pos = position;
                         startActivityForResult(intent, RESULT_UPDATE);
@@ -93,7 +91,8 @@ public class MenuActivity extends AppCompatActivity {
         @Override
         public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
             int position = viewHolder.getAdapterPosition();
-            baseHandler.deleteMenuById(adapter.getItem(position).getId());
+            ItemMenu itemMenu = adapter.getItem(position);
+            itemMenu.delete();
             adapter.remove(position);
         }
 
@@ -108,14 +107,14 @@ public class MenuActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_ADD) {
             ItemMenu menu = data.getParcelableExtra("Data_Add");
-            baseHandler.addMenu(menu);
+            menu.save();
             adapter.insert(menu);
             recyclerView.scrollToPosition(0);
         } else if (resultCode == RESULT_UPDATE) {
             ItemMenu menu = data.getParcelableExtra("Data_Update");
-            baseHandler.updateMenu(new ItemMenu(menu.getId(), menu.getMenu(), menu.getPrice(),
-                    menu.getDetails(), menu.getImage()));
+            menu.updateMenu(id, menu);
             adapter.update(pos, menu);
+            adapter.notifyDataSetChanged();
             recyclerView.scrollToPosition(0);
         }
     }
