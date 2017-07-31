@@ -6,13 +6,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.ahmad.w.menu.MenuActivity;
+import com.example.ahmad.w.menu.MenuFragment;
 import com.example.ahmad.w.R;
 import com.example.ahmad.w.SessionManager;
 import com.example.ahmad.w.auth.LoginActivity;
 import com.example.ahmad.w.model.User;
-
-import java.util.List;
 
 public class DashboardActivity extends AppCompatActivity {
 
@@ -48,6 +46,6 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     public void submitShowMenu(View view) {
-        startActivity(new Intent(this, MenuActivity.class));
+        startActivity(new Intent(this, MenuFragment.class));
     }
 }

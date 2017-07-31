@@ -10,21 +10,15 @@
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <meta-data
             android:name="AA_DB_NAME"
             android:value="restaurant.db" />
-
         <meta-data
             android:name="AA_DB_VERSION"
             android:value="1" />
-
         <meta-data
             android:name="AA_MODELS"
-            android:value="com.example.ahmad.w.model.ItemMenu,
-                           com.example.ahmad.w.model.User" />
-
-        <activity android:name=".menu.MenuActivity" />
+            android:value="com.example.ahmad.w.model.ItemMenu,                            com.example.ahmad.w.model.User" />
         <activity
             android:name=".SplashScreenActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -39,10 +33,16 @@
         <activity android:name=".auth.LoginActivity" />
         <activity android:name=".auth.RegisterActivity" />
         <activity android:name=".user.DashboardActivity" />
-        <!--<activity
-            android:name=".MenuActivity"
+        <!--
+            <activity
+            android:name=".MenuFragment"
             android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar"></activity>-->
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        -->
+        <activity
+            android:name=".fitur.MainActivity"
+            android:label="@string/title_activity_main"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

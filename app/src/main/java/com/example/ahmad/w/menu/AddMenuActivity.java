@@ -39,7 +39,7 @@ public class AddMenuActivity extends AppCompatActivity {
         if (menu != null) {
             getSupportActionBar().setTitle("Edit Menu");
             etName.setText(menu.getMenu());
-            etPrice.setText(menu.getPrice());
+            etPrice.setText("Rp " + Integer.toString(menu.getPrice()));
             etDetails.setText(menu.getDetails());
             /*path = menu.getImage();*/
             Glide.with(AddMenuActivity.this).load(menu.getImage()).into(image);
@@ -97,7 +97,8 @@ public class AddMenuActivity extends AppCompatActivity {
         image = path;
         Intent returnInten = new Intent();
 
-        if (path.isEmpty()) {
+
+        if (path == null) {
             image = menu.getImage();
         }
 
@@ -105,13 +106,13 @@ public class AddMenuActivity extends AppCompatActivity {
         if (menu != null) {
             returnInten.putExtra("Data_Update", new ItemMenu(nameMenu,
                     price, details, image));
-            setResult(MenuActivity.RESULT_UPDATE, returnInten);
+            setResult(MenuFragment.RESULT_UPDATE, returnInten);
             Log.d(TAG, "Data Update :" + menu.toString());
         } else {
-            returnInten.putExtra("Data_Update", new ItemMenu(nameMenu,
+            returnInten.putExtra("Data_Add", new ItemMenu(nameMenu,
                     price, details, image));
-            setResult(MenuActivity.RESULT_ADD, returnInten);
-            Log.d(TAG, "Data Update :" + menu.toString());
+            setResult(MenuFragment.RESULT_ADD, returnInten);
+//            Log.d(TAG, "Data Update :" + menu.toString());
         }
         finish();
     }

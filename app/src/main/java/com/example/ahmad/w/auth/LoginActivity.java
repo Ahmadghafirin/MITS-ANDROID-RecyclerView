@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.example.ahmad.w.R;
 import com.example.ahmad.w.SessionManager;
+import com.example.ahmad.w.fitur.MainActivity;
 import com.example.ahmad.w.model.User;
 import com.example.ahmad.w.user.DashboardActivity;
 
@@ -76,7 +77,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void openDashboard() {
-        Intent data = new Intent(this, DashboardActivity.class);
+        Intent data = new Intent(this, MainActivity.class);
         startActivity(data);
         finish();
     }

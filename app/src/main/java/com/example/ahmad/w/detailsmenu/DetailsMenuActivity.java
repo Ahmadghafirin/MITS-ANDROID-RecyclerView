@@ -33,7 +33,7 @@ public class DetailsMenuActivity extends AppCompatActivity {
         if (itemMenu != null) {
             getSupportActionBar().setTitle(itemMenu.getMenu());
             tvMenu.setText(itemMenu.getMenu());
-            tvHarga.setText(itemMenu.getPrice());
+            tvHarga.setText("Rp " + Integer.toString(itemMenu.getPrice()));
             tvKeterangan.setText(itemMenu.getDetails());
             Glide.with(DetailsMenuActivity.this).load(itemMenu.getImage()).into(ivIcon);
         }

@@ -38,7 +38,7 @@
         android:layout_marginBottom="@dimen/activity_vertical_margin"
         android:background="@color/colorPrimary"
         android:onClick="submitLogin"
-        android:text="Sign"
+        android:text="Sign In"
         android:textColor="#ffffff"
         android:textSize="20sp" />
 

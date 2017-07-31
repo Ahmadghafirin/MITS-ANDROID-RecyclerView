@@ -34,8 +34,9 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
     @Override
     public void onBindViewHolder(MenuViewHolder holder, int position) {
         ItemMenu itemMenu = dataSet.get(position);
+
         holder.tvMenu.setText(itemMenu.getMenu());
-        holder.tvHarga.setText(itemMenu.getPrice());
+        holder.tvHarga.setText("Rp " + Integer.toString(itemMenu.getPrice()));
         Glide.with(context).load(itemMenu.getImage()).into(holder.ivIcon);
     }
 
@@ -58,21 +59,21 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
 
             ivIcon = (ImageView) itemView.findViewById(R.id.iv_icon);
             tvMenu = (TextView) itemView.findViewById(R.id.tv_menu);
-            tvHarga = (TextView) itemView.findViewById(R.id.tv_harga);
+            tvHarga = (TextView) itemView.findViewById(R.id.tv_price);
         }
     }
 
-    public void insert(ItemMenu newItemMenu){
+    public void insert(ItemMenu newItemMenu) {
         dataSet.add(0, newItemMenu);
         notifyItemInserted(0);
     }
 
-    public void remove(int position){
+    public void remove(int position) {
         dataSet.remove(position);
         notifyItemRemoved(position);
     }
 
-    public void update(int position, ItemMenu itemMenu){
+    public void update(int position, ItemMenu itemMenu) {
         dataSet.set(position, itemMenu);
         notifyItemChanged(position);
     }
